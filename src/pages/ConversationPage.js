@@ -1,21 +1,25 @@
 import Header from "../components/Header/Header.js";
 import "./ConversationPage.css";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const ConversationPage = () => {
-  // const [script, setScript] = useState([]);
+  const [script, setScript] = useState([]);
+  // let scriptId = 2;
 
-  // const getPosts = () => {
-  //   axios.get(`/script`).then((res) => {
-  //     console.log(res);
-  //     setScript(res.data);
-  //   });
-  // };
+  // http://localhost:8080
+  const getPosts = () => {
+    axios.get(`/script`).then((res) => {
+      console.log(res);
+      console.log("가상대화 불러오기 성공");
+      // setScript(res.data);
+      // console.log(script);
+    });
+  };
 
-  // useEffect(() => {
-  //   getPosts();
-  // }, []);
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
     <>

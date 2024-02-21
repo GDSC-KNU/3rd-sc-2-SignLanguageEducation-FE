@@ -1,22 +1,23 @@
 import Header from "../components/Header/Header.js";
 import "./LearningPage.css";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const LearningPage = () => {
-  // const [sentence, setSentence] = useState([]);
-  // const [lists, setLists] = useState([]);
+  const [sentence, setSentence] = useState([]);
+  const [lists, setLists] = useState([]);
+  let concern = "SOCCER";
 
-  // const getPosts = () => {
-  //   axios.get(`/sentence/${"축구"}`).then((res) => {
-  //     console.log(res);
-  //     setLists(res.data);
-  //   });
-  // };
+  const getPosts = () => {
+    axios.get(`/sentence/${concern}`).then((res) => {
+      console.log(res);
+      // setLists(res.data);
+    });
+  };
 
-  // useEffect(() => {
-  //   getPosts();
-  // }, []);
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
     <>
