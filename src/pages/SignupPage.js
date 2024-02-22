@@ -1,59 +1,96 @@
 // import React, { useState, useEffect } from "react";
 import React, { useState } from "react";
-// import Axios from "axios";
-// import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 // import { Form, Input, Button, notification } from "antd";
-import { Form } from "antd";
+import { Form, notification } from "antd";
 import "./SignupPage.css";
 
 export default function Signup() {
   const history = useNavigate();
   const [fieldErrors, setFieldErrors] = useState({});
 
-  // const onFinish = (values) => {
-  //   async function fn() {
-  //     const { username, password } = values;
+  const onFinish = (values) => {
+    async function fn() {
+      console.log(values, "아디 비번 확인용");
+      const { username, password } = values;
 
-  // setFieldErrors({});
+      setFieldErrors({});
 
-  //     const data = { username, password };
-  //     try {
-  //       await Axios.post("http://localhost:8080/user/join", data);
-  //       notification.open({
-  //         message: "회원가입을 축하합니다",
-  //         description: "로그인 페이지로 이동합니다",
-  //         icon: <SmileOutlined style={{ color: "#10Bee9" }} />,
-  //       });
+      const data = { username, password };
+      try {
+        await axios
+          .post("http://localhost:8080/api/user/join", {
+            userName: data.username,
+            password: data.password,
+          })
+          .then((res) => {
+            console.log(res);
+            console.log("회원가입 api 성공!");
+            notification.open({
+              message: "회원가입을 축하합니다",
+              description: "로그인 페이지로 이동합니다",
+              icon: <SmileOutlined style={{ color: "#10Bee9" }} />,
+            });
+            // history("/LoginPage/");
+            history("/");
+          })
+          .catch(function (error) {
+            console.log(error);
+            alert("아이디가 중복되었습니다.");
+            if (error.response) {
+              notification.open({
+                message: "회원가입 실패",
+                description: "아이디 및 비밀번호를 다시 확인해주세요",
+                icon: <FrownOutlined style={{ color: "#ff3333" }} />,
+              });
 
-  //       history("/LoginPage/");
-  //     } catch (error) {
-  //       if (error.response) {
-  //         notification.open({
-  //           message: "회원가입 실패",
-  //           description: "아이디 및 비밀번호를 다시 확인해주세요",
-  //           icon: <FrownOutlined style={{ color: "#ff3333" }} />,
-  //         });
+              const { data: fieldsErrorMessage } = error.response;
 
-  //         const { data: fieldsErrorMessage } = error.response;
+              setFieldErrors(
+                Object.entries(fieldsErrorMessage).reduce(
+                  (acc, [fieldName, errors]) => {
+                    acc[fieldName] = {
+                      validateStatus: "error",
+                      help: errors.join(" "),
+                    };
+                    return acc;
+                  },
+                  {}
+                )
+              );
+            }
+          });
+      } catch (error) {
+        console.log("try-catch 에러 발생");
+        // console.log(error);
+        // if (error.response) {
+        //   notification.open({
+        //     message: "회원가입 실패",
+        //     description: "아이디 및 비밀번호를 다시 확인해주세요",
+        //     icon: <FrownOutlined style={{ color: "#ff3333" }} />,
+        //   });
 
-  //         setFieldErrors(
-  //           Object.entries(fieldsErrorMessage).reduce(
-  //             (acc, [fieldName, errors]) => {
-  //               acc[fieldName] = {
-  //                 validateStatus: "error",
-  //                 help: errors.join(" "),
-  //               };
-  //               return acc;
-  //             },
-  //             {}
-  //           )
-  //         );
-  //       }
-  //     }
-  //   }
-  //   fn();
-  // };
+        //   const { data: fieldsErrorMessage } = error.response;
+
+        //   setFieldErrors(
+        //     Object.entries(fieldsErrorMessage).reduce(
+        //       (acc, [fieldName, errors]) => {
+        //         acc[fieldName] = {
+        //           validateStatus: "error",
+        //           help: errors.join(" "),
+        //         };
+        //         return acc;
+        //       },
+        //       {}
+        //     )
+        //   );
+        // }
+      }
+    }
+    fn();
+  };
 
   const handleHome = () => {
     history("/");
@@ -87,7 +124,7 @@ export default function Signup() {
             {...layout}
             name="basic"
             initialValues={{ remember: true }}
-            // onFinish={onFinish}
+            onFinish={onFinish}
           >
             <Form.Item
               className="fadeInLogin SignUpForm"

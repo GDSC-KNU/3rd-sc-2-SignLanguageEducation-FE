@@ -5,16 +5,27 @@ import { useEffect, useState } from "react";
 
 const ConversationPage = () => {
   const [script, setScript] = useState([]);
-  // let scriptId = 2;
+  let scriptId = 5;
+  let token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6InRlc3QzIiwiaWF0IjoxNzA4NTIxNzczLCJleHAiOjE3MDg2MDgxNzN9.H2ftO2R_qOF84FDPfxvAI_BesBaxX40F--zZF0RTPIQ";
 
   // http://localhost:8080
   const getPosts = () => {
-    axios.get(`/script`).then((res) => {
-      console.log(res);
-      console.log("가상대화 불러오기 성공");
-      // setScript(res.data);
-      // console.log(script);
-    });
+    console.log(localStorage.getItem("token"));
+    axios
+      .get(`/script`, {
+        // .get(`/script/${scriptId}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          // "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        console.log("가상대화 불러오기 성공");
+        // setScript(res.data);
+        // console.log(script);
+      });
   };
 
   useEffect(() => {

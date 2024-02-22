@@ -6,17 +6,22 @@ import { useEffect, useState } from "react";
 const LearningPage = () => {
   const [sentence, setSentence] = useState([]);
   const [lists, setLists] = useState([]);
-  let concern = "SOCCER";
-
-  const getPosts = () => {
-    axios.get(`/sentence/${concern}`).then((res) => {
-      console.log(res);
-      // setLists(res.data);
-    });
-  };
+  let soccer = "SOCCER";
+  let basket = "BASKETBALL";
 
   useEffect(() => {
-    getPosts();
+    ///sentence?id=?
+    axios
+      .get(`http://localhost:8080/sentence?id=${2}`, {
+        // .get(`http://localhost:8080/sentence/${soccer}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        // setLists(res.data);
+      });
   }, []);
 
   return (
