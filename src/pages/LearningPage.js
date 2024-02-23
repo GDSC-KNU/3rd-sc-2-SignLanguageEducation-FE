@@ -8,12 +8,13 @@ const LearningPage = () => {
   const [lists, setLists] = useState([]);
   let soccer = "SOCCER";
   let basket = "BASKETBALL";
+  let transportation = "TRANSPORTATION";
 
   useEffect(() => {
     ///sentence?id=?
     axios
-      .get(`http://localhost:8080/sentence?id=${2}`, {
-        // .get(`http://localhost:8080/sentence/${soccer}`, {
+      .get(`http://localhost:8080/sentence?id=${4}`, {
+        // .get(`http://localhost:8080/sentence/${transportation}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
